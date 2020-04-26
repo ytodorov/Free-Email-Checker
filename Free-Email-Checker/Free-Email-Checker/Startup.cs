@@ -53,6 +53,13 @@ namespace Free_Email_Checker
                 options.Providers.Add<GzipCompressionProvider>();
             });
 
+            services.AddHsts(options =>
+            {
+                options.Preload = true;
+                options.IncludeSubDomains = true;
+                options.MaxAge = TimeSpan.FromDays(1);
+            });
+
             services.AddControllersWithViews();
         }
 
@@ -78,8 +85,8 @@ namespace Free_Email_Checker
                 //Very problematic. !!!could lead to error: This site can't be reached
                 app.UseRewriter(new RewriteOptions()
                 .AddRedirect("(.*)/$", "$1", (int)HttpStatusCode.MovedPermanently) // Strip trailing slash
-                .AddRedirectToWww() //Very problematic. !!!could lead to error: This site can't be reached
                 .AddRedirectToHttps()
+                .AddRedirectToWww() //Very problematic. !!!could lead to error: This site can't be reached
                 );
             }
             

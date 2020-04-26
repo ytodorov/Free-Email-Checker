@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -50,6 +52,19 @@ namespace Free_Email_Checker
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
+
+            if (env.EnvironmentName != "Development")
+            {
+                //Very problematic. !!!could lead to error: This site can't be reached
+                app.UseRewriter(new RewriteOptions()
+                .AddRedirect("(.*)/$", "$1", (int)HttpStatusCode.MovedPermanently) // Strip trailing slash
+                .AddRedirectToWww() //Very problematic. !!!could lead to error: This site can't be reached
+                .AddRedirectToHttps()
+                );
+            }
+
+            app.UseResponseCompression();
+
             app.UseStaticFiles();
 
             app.UseRouting();

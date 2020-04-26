@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -70,7 +71,12 @@ namespace Free_Email_Checker
 
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                app.UseExceptionHandler(a => a.Run(async context =>
+                {
+                    IExceptionHandlerPathFeature feature = context.Features.Get<IExceptionHandlerPathFeature>();
+                    Exception exception = feature.Error;
+                    var result = await Task.FromResult(0);
+                }));
             }
             else
             {

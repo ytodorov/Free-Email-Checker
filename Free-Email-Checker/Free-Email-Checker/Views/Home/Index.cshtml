@@ -1,11 +1,13 @@
-﻿<section class="form1 cid-qRmX9FWG5z" id="form5-4i">
+﻿@model BaseViewModel;
+
+<section class="form1 cid-qRmX9FWG5z" id="form5-4i">
     <div class="container">
         <div class="mbr-row mbr-justify-content-center">
 
             <div class="mbr-col-lg-12 mbr-col-md-12 mbr-col-sm-12">
 
                 <div data-form-type="formoid">
-                    <form method="post" target="_top" action-xhr="https://www.free-email-check.com/home/gettime" data-form-title="Free-Email-Check" novalidate="">
+                    <form method="post" target="_top" action-xhr="@(Model.PageBaseCanonicalUrl)/home/checkemail" data-form-title="Free-Email-Check" novalidate="">
 
                         <div class="fieldset">
                             <input type="hidden" name="form[data][1][0]" value="Email" id="form[data][0][0]-form5-4i" data-form-field="">
@@ -19,7 +21,7 @@
 
                         <div submit-success="">
                             <template data-form-alert="" type="amp-mustache">
-                                {{time}}
+                                {{result}} {{status}} {{suggested_correction}}
                             </template>
                         </div>
                         <div submit-error="">

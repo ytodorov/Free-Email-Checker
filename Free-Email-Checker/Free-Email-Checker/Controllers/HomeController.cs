@@ -8,21 +8,28 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Free_Email_Checker.Models;
 using System.Threading;
+using Microsoft.Extensions.Configuration;
+using NeverBounce.Models;
+using NeverBounce;
 
 namespace Free_Email_Checker.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<HomeController> logger;
+        private readonly IConfiguration configuration;
 
         public HomeController(IServiceProvider serviceProvider)
         {
-            _logger = serviceProvider.GetService<ILogger<HomeController>>();
+            logger = serviceProvider.GetService<ILogger<HomeController>>();
+            configuration = serviceProvider.GetService<IConfiguration>();
         }
 
         public IActionResult Index()
         {
-            return View();
+            BaseViewModel baseViewModel = new BaseViewModel();
+            baseViewModel.PageBaseCanonicalUrl = configuration["PageBaseCanonicalUrl"];
+            return View(baseViewModel);
         }
 
         public IActionResult Privacy()
@@ -36,9 +43,27 @@ namespace Free_Email_Checker.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public IActionResult GetTime(string email)
+        public async Task<IActionResult> CheckEmail(string email)
         {
-            return Json(new { time = email + DateTime.Now.ToLongDateString() });
+            
+
+            var neverBounceKey = configuration["NeverBounceKey"];
+
+            var sdk = new NeverBounceSdk(neverBounceKey);
+
+            // Create request model
+            var model = new SingleRequestModel();
+            model.email = email;
+            model.credits_info = true;
+            model.address_info = true;
+            model.timeout = 10;
+
+            // Verify single email
+            SingleResponseModel resp = await sdk.Single.Check(model);
+
+            
+            return Json(resp);
+
         }
     }
 }

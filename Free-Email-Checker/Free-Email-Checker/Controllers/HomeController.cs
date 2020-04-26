@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Free_Email_Checker.Models;
+using System.Threading;
 
 namespace Free_Email_Checker.Controllers
 {
@@ -33,6 +34,11 @@ namespace Free_Email_Checker.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult GetTime(string email)
+        {
+            return Json(new { time = email + DateTime.Now.ToLongDateString() });
         }
     }
 }

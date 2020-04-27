@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@model BaseViewModel;
+
+<!DOCTYPE html>
 <html amp>
 <head>
     <meta charset="UTF-8">
@@ -20,14 +22,29 @@
 </head>
 <body>
     <header>
+        <section class="header1">
+            <div class="container">
+                <div class="mbr-row mbr-justify-content-center">
+                    <div class="mbr-col-lg-12 mbr-col-md-12 mbr-col-sm-12">
+                        <h1 class="mbr-fonts-style mbr-section-title display-2 align-center">Free Email Check</h1>
+                    </div>
+                </div>
+            </div>
+        </section>
     </header>
-    <div>
+    <main>
         @RenderBody()
-    </div>
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - Free_Email_Checker - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
+    </main>
+    <footer>
+        <section class="header1">
+            <div class="container">
+                <div class="mbr-row mbr-justify-content-center">
+                    <div class="mbr-col-lg-12 mbr-col-md-12 mbr-col-sm-12">
+                        <h1 class="mbr-fonts-style mbr-section-title display-2 align-center">Free Email Check</h1>
+                    </div>
+                </div>
+            </div>
+        </section>
     </footer>
 </body>
 </html>
